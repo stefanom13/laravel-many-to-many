@@ -109,14 +109,26 @@ class PostController extends Controller
             'content' => 'required|string',
             'published_at' => 'nullable|date|before_or_equal:today',
             'category_id' => 'nullable|exists:categories,id',
+            'tags'=>'exists:tags,id',
         ]);
 
         $data =$request->all();
+        // dd($data);
+       
         if ($post->title != $data['title']) {
 
             $slug =   Post::getUniqueSlug($data['title']);
             $data ['slug'] = $slug;
         }
+
+        if (array_key_exists('tags',$data)) {
+
+            $post->tags()->sync($data['tags']);
+            
+        } else {
+            $post->tags()->sync([]);
+        }
+        
         
 
         $post->update($data);

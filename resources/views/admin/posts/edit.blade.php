@@ -23,18 +23,15 @@
             {{-- info tags --}}
             <label style="color:green">Tags:</label>
             <div class="d-flex align-items-center">
-            @foreach ($tags as $tag )
-            <div class="form-group pr-4 ">
-                <input type="checkbox" form="form-check-input" value="{{$tag->id}}" name="tag" id="tags-{{$tag->id}}" aria-label="Checkbox for following text input">
-                <label for="tags-{{$tag->id}}">{{$tag->name}}</label>
-                {{-- <label for="title">Titolo*</label>
-                <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title"
-                    value="{{ old('title',$post->title) }}" aria-describedby="emailHelp">
-                @error('title')
-                    <div class="invalid-feedback">{{ 'errore titolo' }}</div>
-                @enderror --}}
-            </div>
-            @endforeach
+                @foreach ($tags as $tag )
+                    <div class="form-group pr-4 ">
+                        <input type="checkbox" {{$post->tags->contains($tag) ? 'checked' : ''}}  class="form-check-input" value="{{$tag->id}}" name="tags[]" id="tags-{{$tag->id}}" >
+                        <label class="form-check-label" for="tags-{{$tag->id}}">{{$tag->name}}</label>
+                    </div>
+                @endforeach
+                @error('tags')
+                    <div class="text-danger">{{ 'errore tags' }}</div>
+                 @enderror 
             </div>
             
             {{-- info categories --}}
