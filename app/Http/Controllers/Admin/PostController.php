@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Post;
 use App\Category;
+use App\Tag;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -17,7 +18,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('category')->orderBy('created_at','desc')->limit(20)->get();
+        $posts = Post::with(['category','tags'])->orderBy('created_at','desc')->limit(20)->get();
         // dd($posts);
         return view('admin.posts.index',compact('posts'));
     }
@@ -89,7 +90,8 @@ class PostController extends Controller
     public function edit( Post $post)
     {
         $categories =Category::all();
-       return view('admin.posts.edit',compact('post','categories'));
+        $tags = Tag::all();
+       return view('admin.posts.edit',compact('post','categories','tags'));
     }
 
     /**
